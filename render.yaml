@@ -1,0 +1,35 @@
+databases:
+  - name: tracking-system-db
+    plan: free
+    databaseName: tracking_system
+    user: tracking_system_user
+
+services:
+  - type: web
+    name: tracking-system-backend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: tracking-system-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: tracking-system-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: tracking-system-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: tracking-system-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: tracking-system-db
+          property: password
+      - key: APP_CORS_ALLOWED_ORIGINS
+        value: http://localhost:5173,https://tracking-system-frontend.onrender.com
