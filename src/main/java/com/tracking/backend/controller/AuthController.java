@@ -1,6 +1,8 @@
 package com.tracking.backend.controller;
 
 import com.tracking.backend.dto.auth.LoginRequestDTO;
+import com.tracking.backend.dto.auth.RegisterRequestDTO;
+import com.tracking.backend.dto.auth.RegistrationStatusDTO;
 import com.tracking.backend.dto.auth.UserResponseDTO;
 import com.tracking.backend.entity.User;
 import com.tracking.backend.exception.InvalidRefreshTokenException;
@@ -39,6 +41,20 @@ public class AuthController {
         this.cookieUtil = cookieUtil;
         this.jwtService = jwtService;
         this.refreshTokenService = refreshTokenService;
+    }
+
+    @GetMapping("/registration-status")
+    public RegistrationStatusDTO registrationStatus() {
+        return new RegistrationStatusDTO(authService.registrationOpen());
+    }
+
+    @PostMapping("/register")
+    public UserResponseDTO register(@Valid @RequestBody RegisterRequestDTO request,
+                                     HttpServletRequest httpRequest,
+                                     HttpServletResponse httpResponse) {
+        var tokens = authService.register(request, httpRequest);
+        issueCookies(httpResponse, tokens);
+        return tokens.user();
     }
 
     @PostMapping("/login")

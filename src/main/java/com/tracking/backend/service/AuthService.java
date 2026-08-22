@@ -1,10 +1,12 @@
 package com.tracking.backend.service;
 
 import com.tracking.backend.dto.auth.LoginRequestDTO;
+import com.tracking.backend.dto.auth.RegisterRequestDTO;
 import com.tracking.backend.dto.auth.UserResponseDTO;
 import com.tracking.backend.entity.User;
 import com.tracking.backend.exception.InvalidCredentialsException;
 import com.tracking.backend.exception.InvalidRefreshTokenException;
+import com.tracking.backend.exception.RegistrationClosedException;
 import com.tracking.backend.repository.UserRepository;
 import com.tracking.backend.security.JwtService;
 import com.tracking.backend.security.RefreshTokenService;
@@ -28,6 +30,26 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.refreshTokenService = refreshTokenService;
+    }
+
+    public boolean registrationOpen() {
+        return userRepository.count() == 0;
+    }
+
+    public AuthTokens register(RegisterRequestDTO request, HttpServletRequest httpRequest) {
+        if (!registrationOpen()) {
+            throw new RegistrationClosedException("Registration is closed");
+        }
+
+        User user = new User();
+        user.setEmail(request.email());
+        user.setPasswordHash(passwordEncoder.encode(request.password()));
+        user.setName(request.name());
+        userRepository.save(user);
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = refreshTokenService.issue(user, httpRequest);
+        return new AuthTokens(accessToken, refreshToken, toUserResponse(user));
     }
 
     public AuthTokens login(LoginRequestDTO request, HttpServletRequest httpRequest) {

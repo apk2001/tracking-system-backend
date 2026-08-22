@@ -38,10 +38,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(requestHandler)
-                        .ignoringRequestMatchers("/api/auth/login", "/api/auth/refresh"))
+                        .ignoringRequestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/refresh"))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/refresh", "/api/health").permitAll()
+                        .requestMatchers(
+                                "/api/auth/register",
+                                "/api/auth/registration-status",
+                                "/api/auth/login",
+                                "/api/auth/refresh",
+                                "/api/health").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
