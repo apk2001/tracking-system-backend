@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "food_logs")
 @Getter
@@ -21,4 +23,7 @@ public class FoodLog extends BaseEntity {
 
     @Column(nullable = false, length = 100)
     private String description;
+
+    @Column(name = "eaten_at", nullable = false)
+    private Instant eatenAt;
 }

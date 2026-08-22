@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface FoodLogRepository extends TrackingRepository<FoodLog> {
 
-    List<FoodLog> findTop10ByOrderByCreatedAtDesc();
+    List<FoodLog> findTop10ByOrderByEatenAtDesc();
 }
