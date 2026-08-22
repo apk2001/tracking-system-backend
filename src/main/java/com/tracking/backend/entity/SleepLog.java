@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "sleep_logs")
@@ -18,10 +18,10 @@ import java.time.LocalDateTime;
 public class SleepLog extends BaseEntity {
 
     @Column(name = "bed_time", nullable = false)
-    private LocalDateTime bedTime;
+    private Instant bedTime;
 
     @Column(name = "wake_time", nullable = false)
-    private LocalDateTime wakeTime;
+    private Instant wakeTime;
 
     @Column(name = "total_time", nullable = false, length = 5)
     private String totalTime;
