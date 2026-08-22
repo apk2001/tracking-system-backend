@@ -40,7 +40,7 @@ class SleepServiceTest {
         when(sleepMapper.toEntity(request)).thenReturn(entity);
         when(sleepLogRepository.save(entity)).thenReturn(entity);
         when(sleepMapper.toResponse(entity)).thenAnswer(invocation -> new SleepResponseDTO(
-                1L, entity.getBedTime(), entity.getWakeTime(), entity.getTotalTime(), entity.getQuality()));
+                1L, null, null, entity.getTotalTime(), entity.getQuality()));
 
         SleepResponseDTO response = sleepService.create(request);
 
@@ -58,7 +58,7 @@ class SleepServiceTest {
         when(sleepMapper.toEntity(request)).thenReturn(entity);
         when(sleepLogRepository.save(entity)).thenReturn(entity);
         when(sleepMapper.toResponse(entity)).thenAnswer(invocation -> new SleepResponseDTO(
-                1L, entity.getBedTime(), entity.getWakeTime(), entity.getTotalTime(), entity.getQuality()));
+                1L, null, null, entity.getTotalTime(), entity.getQuality()));
 
         SleepResponseDTO response = sleepService.create(request);
 

@@ -1,12 +1,21 @@
 package com.tracking.backend.mapper;
 
+import com.tracking.backend.config.RequestTimeZoneHolder;
 import com.tracking.backend.dto.emotion.EmotionRequestDTO;
 import com.tracking.backend.dto.emotion.EmotionResponseDTO;
 import com.tracking.backend.entity.EmotionLog;
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
+
 @Component
 public class EmotionMapper implements EntityMapper<EmotionLog, EmotionRequestDTO, EmotionResponseDTO> {
+
+    private final RequestTimeZoneHolder requestTimeZoneHolder;
+
+    public EmotionMapper(RequestTimeZoneHolder requestTimeZoneHolder) {
+        this.requestTimeZoneHolder = requestTimeZoneHolder;
+    }
 
     @Override
     public EmotionLog toEntity(EmotionRequestDTO request) {
@@ -18,10 +27,11 @@ public class EmotionMapper implements EntityMapper<EmotionLog, EmotionRequestDTO
 
     @Override
     public EmotionResponseDTO toResponse(EmotionLog entity) {
+        ZonedDateTime createdAt = entity.getCreatedAt().atZone(requestTimeZoneHolder.getZoneId());
         return new EmotionResponseDTO(
                 entity.getId(),
-                entity.getCreatedAt().format(DateTimeFormats.DATE),
-                entity.getCreatedAt().format(DateTimeFormats.TIME),
+                createdAt.format(DateTimeFormats.DATE),
+                createdAt.format(DateTimeFormats.TIME),
                 entity.getFeeling(),
                 entity.getReason());
     }

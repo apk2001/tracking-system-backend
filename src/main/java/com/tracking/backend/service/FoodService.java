@@ -21,6 +21,6 @@ public class FoodService extends AbstractTrackingService<FoodLog, FoodRequestDTO
 
     @Override
     protected List<FoodLog> fetchRecent() {
-        return foodLogRepository.findTop10ByOrderByCreatedAtDesc();
+        return foodLogRepository.findTop10ByOrderByEatenAtDesc();
     }
 }
