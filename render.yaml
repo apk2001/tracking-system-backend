@@ -35,5 +35,3 @@ services:
         value: http://localhost:5173,https://tracking-system-frontend.onrender.com
       - key: TZ
         value: Asia/Kolkata
-      - key: JWT_SECRET
-        generateValue: true
